@@ -23,6 +23,8 @@ en:
   errors:
     missing_template: |-
       Configured template/source VM could not be found
+    missing_snapshot: |-
+      Configured snapshot in VM could not be found
     missing_datacenter: |-
       Configured data center not found
     missing_compute_resource: |-
@@ -63,3 +65,5 @@ en:
       Configuration must specify a compute resource name
     resource_pool: |-
       Configuration must specify a resource pool name
+    snapshot_name: |-
+      Configuration must specify a snapshot name

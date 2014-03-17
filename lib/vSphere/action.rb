@@ -94,8 +94,11 @@ module VagrantPlugins
               b2.use MessageAlreadyCreated
               next
             end
-
-            b2.use Clone 
+            if  env[:machine].provider_config.snapshot_mode
+              b2.use Snap
+            else
+              b2.use Clone
+            end
           end
           b.use Call, IsRunning do |env, b2|
             if !env[:result]
@@ -153,6 +156,7 @@ module VagrantPlugins
       #autoload
       action_root = Pathname.new(File.expand_path('../action', __FILE__))
       autoload :Clone, action_root.join('clone')
+      autoload :Snap, action_root.join('snap')
       autoload :CloseVSphere, action_root.join('close_vsphere')
       autoload :ConnectVSphere, action_root.join('connect_vsphere')
       autoload :Destroy, action_root.join('destroy')

@@ -31,6 +31,19 @@ module VagrantPlugins
           
           get_datacenter(connection, machine).find_datastore name or fail Errors::VSphereError, :message => I18n.t('errors.missing_datastore')
         end
+
+        def find_snap_node(tree, name)
+          snapshot = nil
+          tree.each do |node|
+            if node.name == name
+              snapshot = node.snapshot
+            elsif !node.childSnapshotList.empty?
+              snapshot = find_snap_node(node.childSnapshotList, name)
+            end
+          end
+          return snapshot
+        end
+
       end
     end
   end

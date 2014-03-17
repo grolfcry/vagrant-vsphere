@@ -12,6 +12,8 @@ module VagrantPlugins
       attr_accessor :resource_pool_name
       attr_accessor :clone_from_vm
       attr_accessor :template_name
+      attr_accessor :snapshot_name
+      attr_accessor :snapshot_mode
       attr_accessor :name
       attr_accessor :customization_spec_name
       attr_accessor :data_store_name
@@ -27,8 +29,9 @@ module VagrantPlugins
         errors <<  I18n.t('config.template') if template_name.nil?
 
         # These are only required if we're cloning from an actual template
-        errors << I18n.t('config.compute_resource') if compute_resource_name.nil? and not clone_from_vm
-        errors << I18n.t('config.resource_pool') if resource_pool_name.nil? and not clone_from_vm
+        errors << I18n.t('config.compute_resource') if compute_resource_name.nil? and not clone_from_vm and not snapshot_mode
+        errors << I18n.t('config.resource_pool') if resource_pool_name.nil? and not clone_from_vm and not snapshot_mode
+        errors << I18n.t('config.snapshot_name') if snapshot_name.nil? and snapshot_mode
 
         { 'vSphere Provider' => errors }
       end
