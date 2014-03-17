@@ -49,11 +49,11 @@ module VagrantPlugins
             # Create the guest path
             env[:machine].communicate.sudo("mkdir -p '#{guestpath}'")
             env[:machine].communicate.sudo("chown #{ssh_info[:username]} '#{guestpath}'")
-
+            excludes = ['.vagrant/', 'Vagrantfile', *Array(data[:rsync_excludes])]
             # Rsync over to the guest path using the SSH info
             command = [
               "rsync", "--verbose", "--archive", "-z",
-              "--exclude", ".vagrant/",
+              *excludes.map{|e|['--exclude', e]}.flatten,
               "-e", "ssh -p #{ssh_info[:port]} -o StrictHostKeyChecking=no #{get_private_key_options ssh_info}",
               hostpath,
               "#{ssh_info[:username]}@#{ssh_info[:host]}:#{guestpath}"]
